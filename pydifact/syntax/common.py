@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 This file contains common used classes described in the EDIFACT syntax.
 
@@ -9,10 +10,19 @@ it is splitted into 4 different python files, each which could be imported using
 
 herby providing the same structure.
 """
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+try:
+    import builtins
+except ImportError:
+    import __builtin__ as builtins
 
 import re
 
-from pydifact import Segment, Characters
+from .. import Segment, Characters
+
+str = getattr(builtins, 'unicode', str)
 
 
 def assert_a(s, length):
@@ -69,8 +79,8 @@ class UNASegment(Segment):
 
     tag = "UNA"
 
-    def __init__(self, characters: Characters or str = None):
+    def __init__(self, characters=None):
         if not characters:
             characters = Characters()
         assert_an(str(characters), 6)
-        super().__init__("UNA", characters)
+        super(UNASegment, self).__init__("UNA", characters)

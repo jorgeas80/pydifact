@@ -12,13 +12,12 @@ pytest-profiling = "*"
 sphinx = "*"
 setuptools = "*"
 wheel = "*"
-black = "*"
 sphinx_rtd_theme = "*"
 
 [packages]
 
 [requires]
-python_version = "3.6"
+python_version = "2.7"
 
 [pipenv]
 allow_prereleases = true

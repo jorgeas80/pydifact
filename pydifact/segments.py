@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Pydifact - a python edifact library
 #
 # Copyright (c) 2019 Christian González
@@ -19,22 +20,31 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-from typing import Union, List
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+try:
+    import builtins
+except ImportError:
+    import __builtin__ as builtins
 
-from pydifact.api import EDISyntaxError, PluginMount
-from pydifact.control import Characters
+from .api import EDISyntaxError, PluginMount
+from .control import Characters
+
+str = getattr(builtins, 'unicode', str)
 
 
-class SegmentProvider(metaclass=PluginMount):
+class SegmentProvider(object):
     """This is a plugin mount point for Segment plugins which represent a certain EDIFACT Segment.
 
     Classes implementing this PluginMount should provide the following attributes:
     """
+    __metaclass__ = PluginMount
 
     def __str__(self):
         """Returns the user readable text representation of this segment."""
 
-    def validate(self) -> bool:
+    def validate(self):
         """Validates the Segment."""
 
 
@@ -48,7 +58,7 @@ class Segment(SegmentProvider):
     # tag is not a class attribute in this case, as each Segment instance could have another tag.
     __omitted__ = True
 
-    def __init__(self, tag: str, *elements: Union[str, List[str]]):
+    def __init__(self, tag, *elements):
         """Create a new Segment instance.
 
         :param str tag: The code/tag of the segment. Must not be empty.
@@ -62,16 +72,16 @@ class Segment(SegmentProvider):
         # when passing a variable arguments list to a method)
         self.elements = list(elements)
 
-    def __str__(self) -> str:
+    def __str__(self):
         """Returns the Segment in Python list printout"""
         return "'{tag}' EDI segment: {elements}".format(
             tag=self.tag, elements=str(self.elements)
         )
 
-    def __repr__(self) -> str:
+    def __repr__(self):
         return "{} segment: {}".format(self.tag, str(self.elements))
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other):
         # FIXME the other way round too? isinstance(other, type(self))?
         return (
             isinstance(self, type(other))
@@ -85,7 +95,7 @@ class Segment(SegmentProvider):
     def __setitem__(self, key, value):
         self.elements[key] = value
 
-    def validate(self) -> bool:
+    def validate(self):
         """
         Segment validation.
 
@@ -102,21 +112,21 @@ class Segment(SegmentProvider):
         return True
 
 
-class SegmentFactory:
+class SegmentFactory(object):
     """Factory for producing segments."""
 
     characters = None
 
     @staticmethod
-    def create_segment(
-        name: str, *elements: Union[str, List[str]], validate: bool = True
-    ) -> Segment:
+    def create_segment(name, *elements, **kwargs):
         """Create a new instance of the relevant class type.
 
         :param name: The name of the segment
         :param elements: The data elements for this segment
         :param validate: bool if True, the created segment is validated before return
         """
+        validate = kwargs.get('validate', True)
+
         if not SegmentFactory.characters:
             SegmentFactory.characters = Characters()
 

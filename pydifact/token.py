@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Pydifact - a python edifact library
 #
 # Copyright (c) 2019 Christian González
@@ -19,7 +20,9 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
 from enum import Enum
 
 
@@ -37,7 +40,7 @@ class Token:
         DATA_SEPARATOR = 13  # default +
         TERMINATOR = 14  # default '
 
-    def __init__(self, token_type: Type, value: str):
+    def __init__(self, token_type, value):
         """Creates a Token with a type and a value"""
         assert type(token_type) == Token.Type
 
@@ -52,5 +55,5 @@ class Token:
             name=self.type.name, value=self.value, address=hex(id(self))
         )
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other):
         return self.type == other.type and self.value == other.value

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Pydifact - a python edifact library
 #
 # Copyright (c) 2019 Christian González
@@ -20,7 +21,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from pydifact import segmentcollection, parser, segments, serializer, token, tokenizer
+from . import segmentcollection, parser, segments, serializer, token, tokenizer
 
 __version__ = "0.0.6"
 

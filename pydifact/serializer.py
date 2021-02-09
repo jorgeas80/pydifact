@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Pydifact - a python edifact library
 #
 # Copyright (c) 2019 Christian González
@@ -19,19 +20,28 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-from typing import List, Optional
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+try:
+    import builtins
+except ImportError:
+    import __builtin__ as builtins
 
-from pydifact.control.characters import Characters
+from .control.characters import Characters
 import re
 
-from pydifact.segments import Segment
+import itertools
+
+map = getattr(itertools, 'imap', map)
+str = getattr(builtins, 'unicode', str)
 
 
-class Serializer:
+class Serializer(object):
     """Serialize a bunch of segments into an EDI message string."""
 
-    def __init__(self, characters: Characters = None):
-        super().__init__()
+    def __init__(self, characters=None):
+        super(Serializer, self).__init__()
         if characters is None:
             characters = Characters()
 
@@ -43,9 +53,7 @@ class Serializer:
         substrs = sorted(self.replace_map, key=len, reverse=True)
         self.regexp = re.compile("|".join(map(re.escape, substrs)))
 
-    def serialize(
-        self, segments: List[Segment], with_una_header: bool = True, break_lines=False
-    ) -> str:
+    def serialize(self, segments, with_una_header=True, break_lines=False):
         """Serialize all the passed segments.
 
         :param segments: A list of segments to serialize
@@ -92,7 +100,7 @@ class Serializer:
         collection = "".join(collection_parts)
         return collection
 
-    def escape(self, string: Optional[str]) -> str:
+    def escape(self, string):
         """Escapes control characters.
 
         :param string: The string to be escaped

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Pydifact - a python edifact library
 #
 # Copyright (c) 2019 Christian González
@@ -19,27 +20,33 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-from typing import Optional, Generator, Any
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+try:
+    import builtins
+except ImportError:
+    import __builtin__ as builtins
 
-from pydifact.tokenizer import Tokenizer
-from pydifact.token import Token
-from pydifact.segments import Segment, SegmentFactory
-from pydifact.control import Characters
+from .tokenizer import Tokenizer
+from .token import Token
+from .segments import SegmentFactory
+from .control import Characters
+
+range = getattr(builtins, 'xrange', range)
 
 
-class Parser:
+class Parser(object):
     """Parse EDI messages into a list of segments."""
 
-    def __init__(self, factory: SegmentFactory = None):
+    def __init__(self, factory=None):
         if factory is None:
             factory = SegmentFactory()
 
         self.factory = factory
         self.characters = Characters()
 
-    def parse(
-        self, message: str, characters: Characters = None
-    ) -> Generator[Segment, Any, None]:
+    def parse(self, message, characters=None):
         """Parse the message into a list of segments.
 
         :param characters: the control characters to use, if there is no
@@ -68,9 +75,7 @@ class Parser:
         )
 
     @staticmethod
-    def get_control_characters(
-        message: str, characters: Characters = None
-    ) -> Optional[Characters]:
+    def get_control_characters(message, characters=None):
         """Read the UNA segment from the passed string and extract/store the control characters from it.
 
         :param message: a valid EDI message string, or UNA segment string,
@@ -105,7 +110,7 @@ class Parser:
 
         return characters
 
-    def convert_tokens_to_segments(self, tokens: list, characters: Characters):
+    def convert_tokens_to_segments(self, tokens, characters):
         """Convert the tokenized message into an array of segments.
         :param with_una: whether the UNA segment should be included
         :param tokens: The tokens that make up the message

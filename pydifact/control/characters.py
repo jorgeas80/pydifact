@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Pydifact - a python edifact library
 #
 # Copyright (c) 2019 Christian González
@@ -20,8 +21,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
+try:
+    import builtins
+except ImportError:
+    import __builtin__ as builtins
 
 from copy import copy
+
+str = getattr(builtins, 'unicode', str)
 
 
 class Characters:
@@ -49,7 +59,7 @@ class Characters:
         self.line_terminators = [" ", "\r", "\n"]
 
     @classmethod
-    def from_str(cls, string: str) -> "Characters":
+    def from_str(cls, string):
         """Returns a new instance with control characters set to given string.
         :param string: The string to set the control characters to
         """
@@ -66,7 +76,7 @@ class Characters:
         characters.segment_terminator = string[5]
         return characters
 
-    def with_control_character(self, cc_type: str, char: str):
+    def with_control_character(self, cc_type, char):
         """Set a control character.
 
         :param cc_type: The type of control character to set,
@@ -92,7 +102,7 @@ class Characters:
         return other
 
     @property
-    def service_string_advice(self) -> str:
+    def service_string_advice(self):
         return "UNA" + str(self)
 
     @property
@@ -104,7 +114,7 @@ class Characters:
             self.segment_terminator: self.escape_character + self.segment_terminator,
         }
 
-    def __str__(self) -> str:
+    def __str__(self):
         return str(
             self.component_separator
             + self.data_separator
