@@ -24,7 +24,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 from .token import Token
-from .control.characters import Characters
+from .control import Characters
 
 
 class Tokenizer(object):

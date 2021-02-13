@@ -21,11 +21,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-from . import segmentcollection, parser, segments, serializer, token, tokenizer
+from . import segmentcollection, parser, segments, serializer, token, tokenizer, control
 
 __version__ = "0.0.6"
 
-from .control.characters import Characters
+from .control import Characters
 from .segmentcollection import SegmentCollection
 from .parser import Parser
 from .segments import Segment

@@ -28,7 +28,7 @@ try:
 except ImportError:
     import __builtin__ as builtins
 
-from .control.characters import Characters
+from .control import Characters
 import re
 
 import itertools
